@@ -641,4 +641,8 @@ function animateDataStream(element) {
         element.style.opacity = '0';
         
         // 重新动画
-(Content truncated due to size limit. Use line ranges to read in chunks)
+        setTimeout(() => {
+            animateDataStream(element);
+        }, 1000 + Math.random() * 3000);
+    }, 1000 + Math.random() * 2000);
+}
