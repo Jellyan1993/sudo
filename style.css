@@ -1,0 +1,646 @@
+/* 赛博朋克数独游戏 - 主样式表 */
+
+/* 基础样式和变量 */
+:root {
+  /* 主色调 */
+  --bg-dark: #030717;
+  --bg-darker: #000000;
+  --neon-blue: #00ECFF;
+  --neon-pink: #FF00DC;
+  --neon-purple: #8900FF;
+  --neon-green: #39FF14;
+  
+  /* 字体 */
+  --font-title: 'Orbitron', sans-serif;
+  --font-numbers: 'Share Tech Mono', monospace;
+  --font-text: 'Rajdhani', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: #ffffff;
+  font-family: var(--font-text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* 背景效果 */
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(3, 7, 23, 0.6);
+}
+
+.bg-center-light {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background: radial-gradient(circle, rgba(137, 0, 255, 0.15) 0%, rgba(0, 236, 255, 0.05) 30%, rgba(0, 0, 0, 0) 70%);
+  pointer-events: none;
+}
+
+.bg-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 30px 30px, 15px 15px;
+  animation: particlesDrift 120s linear infinite;
+}
+
+@keyframes particlesDrift {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  100% {
+    background-position: 1000px 500px, 500px 1000px;
+  }
+}
+
+/* 容器和布局 */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  gap: 20px;
+}
+
+/* 霓虹文字效果 */
+.neon-text {
+  font-family: var(--font-title);
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  position: relative;
+  text-shadow:
+    0 0 5px rgba(255, 255, 255, 0.8),
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 0 15px rgba(0, 236, 255, 0.5),
+    0 0 20px rgba(0, 236, 255, 0.5),
+    0 0 25px rgba(0, 236, 255, 0.5),
+    0 0 30px rgba(0, 236, 255, 0.5);
+  animation: neonFlicker 5s infinite alternate;
+}
+
+.neon-text::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(0, 236, 255, 0.5);
+  filter: blur(8px);
+  animation: neonPulse 2s infinite alternate;
+}
+
+@keyframes neonFlicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow:
+      0 0 5px rgba(255, 255, 255, 0.8),
+      0 0 10px rgba(255, 255, 255, 0.5),
+      0 0 15px rgba(0, 236, 255, 0.5),
+      0 0 20px rgba(0, 236, 255, 0.5),
+      0 0 25px rgba(0, 236, 255, 0.5),
+      0 0 30px rgba(0, 236, 255, 0.5);
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
+}
+
+@keyframes neonPulse {
+  0% {
+    filter: blur(8px);
+    opacity: 0.8;
+  }
+  100% {
+    filter: blur(12px);
+    opacity: 0.9;
+  }
+}
+
+/* 电路板分隔线 */
+.circuit-line {
+  height: 2px;
+  background: linear-gradient(90deg, 
+    rgba(0, 0, 0, 0) 0%, 
+    rgba(0, 236, 255, 0.8) 20%, 
+    rgba(0, 236, 255, 0.8) 80%, 
+    rgba(0, 0, 0, 0) 100%);
+  position: relative;
+  margin: 10px auto 30px;
+  width: 80%;
+}
+
+.circuit-line::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  background-color: var(--neon-blue);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+}
+
+.circuit-line::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background-image: 
+    linear-gradient(90deg, transparent, transparent 10px, var(--neon-blue) 10px, var(--neon-blue) 12px, transparent 12px, transparent),
+    linear-gradient(90deg, transparent, transparent 30px, var(--neon-blue) 30px, var(--neon-blue) 32px, transparent 32px, transparent),
+    linear-gradient(90deg, transparent, transparent 60px, var(--neon-blue) 60px, var(--neon-blue) 62px, transparent 62px, transparent);
+  background-size: 100px 100%;
+  background-repeat: repeat-x;
+}
+
+/* 状态面板 */
+.status-panel {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 450px;
+  margin-bottom: 20px;
+  background: rgba(3, 7, 23, 0.7);
+  border: 1px solid rgba(0, 236, 255, 0.3);
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 0 15px rgba(0, 236, 255, 0.2);
+}
+
+.timer, .difficulty, .progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timer-label, .difficulty-label, .progress-label {
+  font-family: var(--font-text);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 5px;
+}
+
+.timer-value, .difficulty-value {
+  font-family: var(--font-numbers);
+  font-size: 1.2rem;
+  color: var(--neon-blue);
+  text-shadow: 0 0 5px rgba(0, 236, 255, 0.5);
+}
+
+.progress {
+  flex-grow: 1;
+  margin: 0 15px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+/* 数独网格 */
+.sudoku-grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  gap: 1px;
+  width: 100%;
+  max-width: 450px;
+  aspect-ratio: 1/1;
+  background-color: rgba(0, 236, 255, 0.3);
+  padding: 2px;
+  border-radius: 5px;
+  box-shadow: 
+    0 0 10px rgba(0, 236, 255, 0.3),
+    0 0 20px rgba(0, 236, 255, 0.2),
+    0 0 30px rgba(0, 236, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.sudoku-grid::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(90deg, transparent 32.9%, rgba(0, 236, 255, 0.5) 33%, rgba(0, 236, 255, 0.5) 33.1%, transparent 33.2%),
+    linear-gradient(90deg, transparent 66.2%, rgba(0, 236, 255, 0.5) 66.3%, rgba(0, 236, 255, 0.5) 66.4%, transparent 66.5%),
+    linear-gradient(0deg, transparent 32.9%, rgba(0, 236, 255, 0.5) 33%, rgba(0, 236, 255, 0.5) 33.1%, transparent 33.2%),
+    linear-gradient(0deg, transparent 66.2%, rgba(0, 236, 255, 0.5) 66.3%, rgba(0, 236, 255, 0.5) 66.4%, transparent 66.5%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cell {
+  background-color: rgba(3, 7, 23, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-numbers);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  user-select: none;
+}
+
+.cell.given {
+  color: var(--neon-blue);
+  text-shadow: 0 0 5px rgba(0, 236, 255, 0.5);
+}
+
+.cell.player {
+  color: var(--neon-pink);
+  text-shadow: 0 0 5px rgba(255, 0, 220, 0.5);
+}
+
+.cell.selected {
+  background-color: rgba(137, 0, 255, 0.2);
+  box-shadow: 
+    inset 0 0 5px rgba(137, 0, 255, 0.5),
+    0 0 10px rgba(137, 0, 255, 0.3);
+  transform: scale(1.05);
+  z-index: 2;
+}
+
+.cell.error {
+  color: #FF3A3A;
+  animation: errorShake 0.3s ease;
+}
+
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* 控制面板 */
+.control-panel {
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.number-pad {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 5px;
+}
+
+.number-button {
+  font-family: var(--font-numbers);
+  font-size: 1.2rem;
+  background-color: rgba(3, 7, 23, 0.8);
+  border: 1px solid rgba(0, 236, 255, 0.3);
+  color: var(--neon-blue);
+  padding: 10px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-shadow: 0 0 5px rgba(0, 236, 255, 0.5);
+  border-radius: 3px;
+}
+
+.number-button:hover {
+  background-color: rgba(0, 236, 255, 0.2);
+  box-shadow: 0 0 10px rgba(0, 236, 255, 0.3);
+}
+
+.number-button:active {
+  transform: scale(0.95);
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.cyber-button {
+  font-family: var(--font-text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background-color: rgba(3, 7, 23, 0.8);
+  border: 1px solid rgba(137, 0, 255, 0.5);
+  color: var(--neon-purple);
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-shadow: 0 0 5px rgba(137, 0, 255, 0.5);
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cyber-button::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  background: linear-gradient(45deg, 
+    var(--neon-purple), 
+    var(--neon-blue), 
+    var(--neon-pink), 
+    var(--neon-purple));
+  z-index: -1;
+  animation: borderGlow 3s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cyber-button:hover::before {
+  opacity: 1;
+}
+
+.cyber-button:hover {
+  color: #ffffff;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 15px rgba(137, 0, 255, 0.3);
+}
+
+.cyber-button:active {
+  transform: scale(0.95);
+}
+
+@keyframes borderGlow {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}
+
+/* 难度选择器 */
+.difficulty-selector {
+  margin-top: 10px;
+}
+
+.selector-label {
+  font-family: var(--font-text);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.selector-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.difficulty-button {
+  width: 40px;
+  height: 40px;
+  font-family: var(--font-numbers);
+  font-size: 1.2rem;
+  background-color: rgba(3, 7, 23, 0.8);
+  border: 1px solid rgba(0, 236, 255, 0.3);
+  color: var(--neon-blue);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.difficulty-button:hover {
+  background-color: rgba(0, 236, 255, 0.2);
+}
+
+.difficulty-button.active {
+  background-color: rgba(0, 236, 255, 0.3);
+  border-color: var(--neon-blue);
+  box-shadow: 0 0 10px rgba(0, 236, 255, 0.5);
+}
+
+/* 完成弹窗 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background-color: rgba(3, 7, 23, 0.95);
+  border: 1px solid var(--neon-blue);
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 
+    0 0 20px rgba(0, 236, 255, 0.3),
+    0 0 40px rgba(0, 236, 255, 0.2);
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.modal.active .modal-content {
+  transform: scale(1);
+}
+
+.completion-stats {
+  display: flex;
+  justify-content: space-around;
+  margin: 30px 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-family: var(--font-text);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  font-family: var(--font-numbers);
+  font-size: 1.5rem;
+  color: var(--neon-green);
+  text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
+}
+
+/* 响应式设计 */
+@media (min-width: 768px) {
+  .game-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .sudoku-grid {
+    margin: 0 20px;
+  }
+  
+  .control-panel {
+    width: 200px;
+    margin-top: 0;
+  }
+  
+  .number-pad {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+  
+  .action-buttons {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .neon-text {
+    font-size: 2.5rem;
+  }
+  
+  .cell {
+    font-size: 1.2rem;
+  }
+  
+  .number-button {
+    font-size: 1rem;
+    padding: 8px 0;
+  }
+  
+  .cyber-button {
+    font-size: 0.8rem;
+    padding: 8px;
+  }
+}
+
+/* 动画效果 */
+@keyframes glitchEffect {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+.glitch {
+  animation: glitchEffect 0.3s ease;
+}
+
+@keyframes cellComplete {
+  0% {
+    box-shadow: 0 0 5px var(--neon-green);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--neon-green);
+  }
+  100% {
+    box-shadow: 0 0 5px var(--neon-green);
+  }
+}
+
+.cell.complete {
+  animation: cellComplete 1s ease;
+}
+
+/* 数据流背景动画 - 将在JS中实现 */
